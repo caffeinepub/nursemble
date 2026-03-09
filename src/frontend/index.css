@@ -1,0 +1,358 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Plus Jakarta Sans — self-hosted variable font */
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("/assets/fonts/PlusJakartaSans.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+
+    /* ─── Nursemble 4-layer depth system ───────────────────────────────
+       layer-base:    0.108  deepest background
+       layer-surface: 0.138  panel surfaces (sidebar, header)
+       layer-raised:  0.158  cards, bubbles, dropdowns
+       layer-overlay: 0.175  popovers, elevated cards
+    ──────────────────────────────────────────────────────────────────── */
+
+    --background:      0.108 0.009 252;
+    --foreground:      0.94  0.008 240;
+
+    --card:            0.158 0.011 248;
+    --card-foreground: 0.94  0.008 240;
+
+    --popover:         0.175 0.013 246;
+    --popover-foreground: 0.94 0.008 240;
+
+    /* Primary = Teal #0d9488 → oklch(0.598 0.118 182) */
+    --primary:          0.598 0.118 182;
+    --primary-foreground: 0.98 0.005 180;
+
+    --secondary:        0.198 0.012 248;
+    --secondary-foreground: 0.82 0.010 240;
+
+    --muted:            0.178 0.010 248;
+    --muted-foreground: 0.52  0.012 240;
+
+    --accent:           0.218 0.014 246;
+    --accent-foreground: 0.92 0.008 240;
+
+    --destructive:      0.577 0.245 27.325;
+    --destructive-foreground: 0.985 0 0;
+
+    /* Borders: slightly more visible for premium depth */
+    --border: 0.98 0.008 240 / 12%;
+    --input:  0.98 0.008 240 / 10%;
+    --ring:   0.598 0.118 182;
+
+    /* ─── Teal tokens ──────────────────────────────────────── */
+    --teal:          0.598 0.118 182;
+    --teal-dim:      0.52  0.095 182;
+    --teal-muted:    0.42  0.072 182;
+    --teal-subtle:   0.598 0.118 182 / 12%;
+    --teal-glow:     0.598 0.118 182 / 18%;
+
+    /* ─── Sidebar ────────────────────────────────────────────── */
+    --sidebar:            0.138 0.010 250;
+    --sidebar-foreground: 0.82  0.010 240;
+    --sidebar-primary:    0.598 0.118 182;
+    --sidebar-primary-foreground: 0.98 0 0;
+    --sidebar-accent:     0.168 0.012 248;
+    --sidebar-accent-foreground: 0.85 0.008 240;
+    --sidebar-border:     0.98 0.008 240 / 10%;
+    --sidebar-ring:       0.598 0.118 182;
+
+    /* ─── Charts ─────────────────────────────────────────────── */
+    --chart-1: 0.598 0.118 182;
+    --chart-2: 0.696 0.170 162.48;
+    --chart-3: 0.769 0.188  70.08;
+    --chart-4: 0.627 0.265 303.90;
+    --chart-5: 0.645 0.246  16.44;
+  }
+
+  /* ─── Force dark mode ──────────────────────────────────────────── */
+  html {
+    color-scheme: dark;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ANIMATIONS
+═══════════════════════════════════════════════════════════════ */
+
+/*
+  P0 FIX — lamp glow redesign
+  Three-stage slow breath: ambient → warm soft peak → back.
+  Peak is 0.75 opacity (not 1.0) to stay warm, never harsh.
+  4.5s cycle feels like a living flame, not a neon sign.
+  Inner glow stays tight (12px); outer halo is very diffuse (32px).
+*/
+@keyframes lampGlow {
+  0%, 100% {
+    filter:
+      drop-shadow(0 0  6px rgba(13, 148, 136, 0.35))
+      drop-shadow(0 0 14px rgba(13, 148, 136, 0.15));
+  }
+  50% {
+    filter:
+      drop-shadow(0 0 10px rgba(13, 148, 136, 0.65))
+      drop-shadow(0 0 28px rgba(13, 148, 136, 0.28));
+  }
+}
+
+@keyframes lampGlowLarge {
+  0%, 100% {
+    filter:
+      drop-shadow(0 0  8px rgba(13, 148, 136, 0.40))
+      drop-shadow(0 0 20px rgba(13, 148, 136, 0.18));
+  }
+  40% {
+    filter:
+      drop-shadow(0 0 14px rgba(13, 148, 136, 0.72))
+      drop-shadow(0 0 36px rgba(13, 148, 136, 0.32))
+      drop-shadow(0 0 56px rgba(13, 148, 136, 0.12));
+  }
+  100% {
+    filter:
+      drop-shadow(0 0  8px rgba(13, 148, 136, 0.40))
+      drop-shadow(0 0 20px rgba(13, 148, 136, 0.18));
+  }
+}
+
+/*
+  P0 halo — radial glow behind the lamp on the welcome screen.
+  Applied to the wrapper div, not the image.
+*/
+@keyframes haloBreath {
+  0%, 100% { opacity: 0.35; transform: scale(1.00); }
+  50%       { opacity: 0.55; transform: scale(1.06); }
+}
+
+@keyframes typingDot {
+  0%, 60%, 100% {
+    opacity: 0.25;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes welcomeFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   UTILITY CLASSES
+═══════════════════════════════════════════════════════════════ */
+
+.lamp-glow {
+  animation: lampGlow 4.5s ease-in-out infinite;
+}
+
+.lamp-glow-large {
+  animation: lampGlowLarge 4.5s ease-in-out infinite;
+}
+
+/* Halo ring behind the welcome lamp */
+.lamp-halo {
+  position: absolute;
+  inset: -28px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(13, 148, 136, 0.22) 0%,
+    rgba(13, 148, 136, 0.08) 45%,
+    transparent 72%
+  );
+  animation: haloBreath 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.typing-dot {
+  animation: typingDot 1.4s ease-in-out infinite;
+}
+
+.typing-dot:nth-child(2) {
+  animation-delay: 0.22s;
+}
+
+.typing-dot:nth-child(3) {
+  animation-delay: 0.44s;
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.35s ease-out forwards;
+}
+
+.welcome-fade-in {
+  animation: welcomeFadeIn 0.6s ease-out forwards;
+}
+
+.welcome-fade-in-delay-1 {
+  animation: welcomeFadeIn 0.6s ease-out 0.12s both;
+}
+
+.welcome-fade-in-delay-2 {
+  animation: welcomeFadeIn 0.6s ease-out 0.26s both;
+}
+
+.slide-in-right {
+  animation: slideInRight 0.3s ease-out forwards;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SCROLLBAR
+═══════════════════════════════════════════════════════════════ */
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: oklch(0.26 0.012 248);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.598 0.118 182 / 45%);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   P2 — MESSAGE BUBBLES: warmer padding, better leading
+═══════════════════════════════════════════════════════════════ */
+
+.bubble-florence {
+  background: oklch(0.158 0.011 248);
+  border: 1px solid oklch(0.98 0.008 240 / 12%);
+  /* subtle inner shadow for depth */
+  box-shadow: inset 0 1px 0 oklch(0.98 0.008 240 / 5%);
+  line-height: 1.72;
+  padding: 12px 18px;
+  border-radius: 18px;
+  border-bottom-left-radius: 4px;
+  color: oklch(0.88 0.008 240);
+}
+
+.bubble-user {
+  background: oklch(0.598 0.118 182);
+  box-shadow: 0 2px 8px oklch(0.598 0.118 182 / 30%);
+  line-height: 1.72;
+  padding: 12px 18px;
+  border-radius: 18px;
+  border-bottom-right-radius: 4px;
+  color: white;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SIDEBAR ITEMS
+═══════════════════════════════════════════════════════════════ */
+
+.sidebar-item-active {
+  border-left: 2px solid oklch(0.598 0.118 182);
+  background: oklch(0.598 0.118 182 / 11%);
+  color: oklch(0.74 0.092 182);
+}
+
+.sidebar-item-hover:hover {
+  background: oklch(0.168 0.011 248);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PROMPT CHIPS — P2 larger + warmer
+═══════════════════════════════════════════════════════════════ */
+
+.teal-chip {
+  background: oklch(0.158 0.011 248);
+  border: 1px solid oklch(0.98 0.008 240 / 14%);
+  color: oklch(0.74 0.010 240);
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.teal-chip:hover {
+  border-color: oklch(0.598 0.118 182 / 70%);
+  color: oklch(0.82 0.085 182);
+  background: oklch(0.598 0.118 182 / 9%);
+  box-shadow: 0 0 0 1px oklch(0.598 0.118 182 / 18%);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CHAT INPUT — focus ring
+═══════════════════════════════════════════════════════════════ */
+
+.chat-input-wrapper {
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.chat-input-wrapper:focus-within {
+  border-color: oklch(0.598 0.118 182 / 55%) !important;
+  box-shadow: 0 0 0 3px oklch(0.598 0.118 182 / 12%);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   P1 — DEPTH: Atmosphere gradient behind welcome
+═══════════════════════════════════════════════════════════════ */
+
+.welcome-atmosphere {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 60% 50% at 50% 40%,
+    oklch(0.598 0.118 182 / 6%) 0%,
+    transparent 70%
+  );
+}
