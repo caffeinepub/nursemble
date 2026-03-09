@@ -2,15 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Plus Jakarta Sans — self-hosted variable font */
-@font-face {
-  font-family: "Plus Jakarta Sans";
-  src: url("/assets/fonts/PlusJakartaSans.woff2") format("woff2");
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
 @layer base {
   :root {
     --radius: 0.5rem;
@@ -93,9 +84,15 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+    font-family: "DM Sans", system-ui, sans-serif;
+    font-weight: 400;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "DM Sans", system-ui, sans-serif;
+    font-weight: 700;
   }
 }
 
@@ -286,6 +283,8 @@
   border-radius: 18px;
   border-bottom-left-radius: 4px;
   color: oklch(0.228 0.034 248);
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-weight: 400;
 }
 
 /* bubble-user stays teal — unchanged */
@@ -297,6 +296,8 @@
   border-radius: 18px;
   border-bottom-right-radius: 4px;
   color: white;
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-weight: 400;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -321,6 +322,8 @@
   background: oklch(0.980 0.004 90);
   border: 1px solid oklch(0.228 0.034 248 / 14%);
   color: oklch(0.400 0.010 248);
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-weight: 500;
   transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
 }
 

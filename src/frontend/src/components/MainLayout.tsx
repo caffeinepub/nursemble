@@ -5,7 +5,7 @@ import { LeftSidebar } from "./nursemble/LeftSidebar";
 import { MobileTabBar } from "./nursemble/MobileTabBar";
 import { RightPanel } from "./nursemble/RightPanel";
 import { TopNav } from "./nursemble/TopNav";
-import { SAMPLE_CONVERSATIONS, SUPNURSE_TOOL } from "./nursemble/data";
+import { SUPNURSE_TOOL } from "./nursemble/data";
 import type {
   ActiveTab,
   ChatMessage,
@@ -18,10 +18,9 @@ function genId() {
   return `msg-${++msgIdCounter}-${Date.now()}`;
 }
 
-// Simulated Florence responses
 const FLORENCE_RESPONSES: Record<string, string> = {
   scrubs:
-    "Great choice! 👗 Scrubs that hold up through a 12-hour shift matter. Let me open ScrubLife — they've got a solid curation of brands that nurses actually love, including options for every body type. 🏮",
+    "Great choice! Scrubs that hold up through a 12-hour shift matter. Let me open ScrubLife — they've got a solid curation of brands that nurses actually love, including options for every body type. 🏮",
   burnout:
     "I hear you. 💚 Burnout is real and it's not a weakness — it's a signal. Let's talk about what's been weighing on you most. Or if you'd like connection, I can open SupNurse where there are nurses who truly get it. 🏮",
   business:
@@ -37,10 +36,8 @@ function getFlorenceResponse(message: string): Promise<string> {
   return new Promise((resolve) => {
     const lower = message.toLowerCase();
     const delay = 1200 + Math.random() * 800;
-
     let response =
       "I'm here for you. 💚 Tell me more about what you need — whether it's career support, resources, wellness, or just someone to talk to. I've got you. 🏮";
-
     if (
       lower.includes("scrub") ||
       lower.includes("uniform") ||
@@ -82,26 +79,22 @@ function getFlorenceResponse(message: string): Promise<string> {
     ) {
       response = FLORENCE_RESPONSES.clinical;
     }
-
     setTimeout(() => resolve(response), delay);
   });
 }
 
 export function MainLayout() {
   const isMobile = useIsMobile();
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  // Sidebar hidden by default — clean welcome state on load
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeConversation, setActiveConversation] =
-    useState<ConversationItem | null>(SAMPLE_CONVERSATIONS[0]);
-  const [messages, setMessages] = useState<ChatMessage[]>(
-    SAMPLE_CONVERSATIONS[0].messages,
-  );
+    useState<ConversationItem | null>(null);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isTyping, setIsTyping] = useState(false);
-  const [activeTool, setActiveTool] = useState<ToolItem | null>(SUPNURSE_TOOL);
-  const [rightPanelOpen, setRightPanelOpen] = useState(true);
+  const [activeTool, setActiveTool] = useState<ToolItem | null>(null);
+  const [rightPanelOpen, setRightPanelOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<ActiveTab>("florence");
 
-  // Sync messages when conversation changes
   useEffect(() => {
     if (activeConversation) {
       setMessages(activeConversation.messages);
@@ -124,15 +117,12 @@ export function MainLayout() {
 
   const handleSendMessage = useCallback(
     async (text: string) => {
-      // Create user message
       const userMsg: ChatMessage = {
         id: genId(),
         role: "user",
         content: text,
         timestamp: new Date(),
       };
-
-      // If no active conversation, create one
       if (!activeConversation) {
         const newConv: ConversationItem = {
           id: `conv-new-${Date.now()}`,
@@ -145,10 +135,7 @@ export function MainLayout() {
       } else {
         setMessages((prev) => [...prev, userMsg]);
       }
-
-      // Show typing
       setIsTyping(true);
-
       try {
         const response = await getFlorenceResponse(text);
         const florenceMsg: ChatMessage = {
@@ -158,8 +145,6 @@ export function MainLayout() {
           timestamp: new Date(),
         };
         setMessages((prev) => [...prev, florenceMsg]);
-
-        // Auto-open SupNurse for burnout/exhaustion messages
         const lower = text.toLowerCase();
         if (
           lower.includes("burnout") ||
@@ -190,9 +175,6 @@ export function MainLayout() {
 
   const handleTabChange = useCallback((tab: ActiveTab) => {
     setActiveTab(tab);
-    if (tab === "tools") {
-      // Show the tools grid — for mobile we open a tool list view
-    }
   }, []);
 
   const handleBackFromTool = useCallback(() => {
@@ -200,7 +182,6 @@ export function MainLayout() {
     setActiveTool(null);
   }, []);
 
-  // Mobile: show right panel as full screen overlay
   const showMobileRightPanel = isMobile && rightPanelOpen && activeTool;
 
   return (
@@ -208,40 +189,27 @@ export function MainLayout() {
       className="flex flex-col h-screen overflow-hidden"
       style={{ background: "oklch(0.934 0.010 80)" }}
     >
-      {/* Top Nav */}
       <TopNav
-        onHamburgerClick={() => setMobileSidebarOpen(true)}
+        sidebarOpen={sidebarOpen}
+        onSidebarToggle={() => setSidebarOpen((v) => !v)}
         onToolSelect={handleToolSelect}
       />
 
-      {/* Main content below nav */}
       <div
         className="flex flex-1 overflow-hidden"
         style={{ marginTop: "56px" }}
       >
-        {/* Left Sidebar — desktop */}
+        {/* Sidebar — overlay for all screen sizes, hidden by default */}
         <LeftSidebar
           isOpen={sidebarOpen}
-          onToggle={() => setSidebarOpen((v) => !v)}
+          onClose={() => setSidebarOpen(false)}
           activeConversationId={activeConversation?.id ?? null}
           onConversationSelect={handleConversationSelect}
           onNewChat={handleNewChat}
         />
 
-        {/* Left Sidebar — mobile overlay */}
-        <LeftSidebar
-          isOpen={mobileSidebarOpen}
-          onToggle={() => setMobileSidebarOpen((v) => !v)}
-          activeConversationId={activeConversation?.id ?? null}
-          onConversationSelect={handleConversationSelect}
-          onNewChat={handleNewChat}
-          isMobile={true}
-          onMobileClose={() => setMobileSidebarOpen(false)}
-        />
-
-        {/* Center + Right panels */}
+        {/* Full-width center + right area */}
         <div className="flex flex-1 overflow-hidden relative">
-          {/* Chat panel — hidden on mobile when right panel is full screen */}
           {!showMobileRightPanel && (
             <div
               className="flex flex-col overflow-hidden"
@@ -262,7 +230,6 @@ export function MainLayout() {
             </div>
           )}
 
-          {/* Right panel */}
           {!isMobile && rightPanelOpen && activeTool && (
             <RightPanel
               tool={activeTool}
@@ -271,7 +238,6 @@ export function MainLayout() {
             />
           )}
 
-          {/* Mobile full-screen right panel */}
           {showMobileRightPanel && (
             <RightPanel
               tool={activeTool}
@@ -283,7 +249,6 @@ export function MainLayout() {
         </div>
       </div>
 
-      {/* Footer */}
       <footer
         className="flex-shrink-0 text-center py-2 px-5 text-[11px] hidden md:flex items-center justify-between"
         style={{
@@ -310,7 +275,6 @@ export function MainLayout() {
         </span>
       </footer>
 
-      {/* Mobile tab bar */}
       <MobileTabBar activeTab={activeTab} onTabChange={handleTabChange} />
     </div>
   );

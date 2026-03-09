@@ -40,7 +40,11 @@ export function RightPanel({
           <span className="text-base leading-none">{tool.iconEmoji}</span>
           <span
             className="font-semibold text-[13px] truncate"
-            style={{ color: "oklch(0.228 0.034 248)" }}
+            style={{
+              color: "oklch(0.228 0.034 248)",
+              fontFamily: '"DM Sans", system-ui, sans-serif',
+              fontWeight: 500,
+            }}
           >
             {tool.name}
           </span>
@@ -127,19 +131,32 @@ export function RightPanel({
             </div>
             <h3
               className="text-lg font-bold mb-1.5 tracking-tight"
-              style={{ color: "oklch(0.228 0.034 248)" }}
+              style={{
+                color: "oklch(0.228 0.034 248)",
+                fontFamily: '"DM Sans", system-ui, sans-serif',
+                fontWeight: 700,
+              }}
             >
               {tool.name}
             </h3>
             <p
               className="text-sm mb-2 max-w-[240px] leading-relaxed"
-              style={{ color: "oklch(0.522 0.006 260)" }}
+              style={{
+                color: "oklch(0.522 0.006 260)",
+                fontFamily: '"DM Sans", system-ui, sans-serif',
+                fontWeight: 400,
+              }}
             >
               {tool.description}
             </p>
             <p
               className="text-xs mb-6"
-              style={{ color: "oklch(0.522 0.006 260)", opacity: 0.7 }}
+              style={{
+                color: "oklch(0.522 0.006 260)",
+                opacity: 0.7,
+                fontFamily: '"DM Sans", system-ui, sans-serif',
+                fontWeight: 400,
+              }}
             >
               This site blocks embedding — open it directly.
             </p>
@@ -151,6 +168,8 @@ export function RightPanel({
               style={{
                 background: "oklch(0.598 0.118 182)",
                 boxShadow: "0 2px 10px oklch(0.598 0.118 182 / 35%)",
+                fontFamily: '"DM Sans", system-ui, sans-serif',
+                fontWeight: 500,
               }}
             >
               <ExternalLink className="h-[14px] w-[14px]" />

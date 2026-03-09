@@ -17,19 +17,15 @@ interface ChatPanelProps {
   onBackFromTool?: () => void;
 }
 
-/* ─── Typing indicator ────────────────────────────────────── */
 function TypingIndicator() {
   return (
     <div className="flex items-start gap-3 mb-5" data-ocid="chat.typing_state">
-      {/* Avatar */}
       <div
         className="h-7 w-7 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
         style={{ background: "oklch(0.598 0.118 182 / 18%)" }}
       >
         <span className="text-sm leading-none">🏮</span>
       </div>
-
-      {/* Dots */}
       <div
         className="flex items-center gap-1.5 px-4 py-3 rounded-[18px] rounded-bl-[4px]"
         style={{
@@ -54,18 +50,13 @@ function TypingIndicator() {
   );
 }
 
-/* ─── Welcome state ───────────────────────────────────────── */
-interface WelcomeStateProps {
-  onChipClick: (text: string) => void;
-}
-
-function WelcomeState({ onChipClick }: WelcomeStateProps) {
+function WelcomeState({
+  onChipClick,
+}: { onChipClick: (text: string) => void }) {
   return (
     <div className="flex flex-col items-center justify-center flex-1 px-6 pb-20 relative">
       <div className="welcome-atmosphere" />
-
       <div className="flex flex-col items-center gap-6 max-w-md w-full text-center relative z-10">
-        {/* Lamp with halo ring */}
         <div className="relative flex items-center justify-center welcome-fade-in">
           <div className="lamp-halo" />
           <img
@@ -74,39 +65,47 @@ function WelcomeState({ onChipClick }: WelcomeStateProps) {
             className="h-24 w-24 object-contain lamp-glow-large relative z-10"
           />
         </div>
-
-        {/* Heading — Dark Navy */}
         <div className="welcome-fade-in-delay-1 space-y-2">
           <h1
             className="text-3xl font-bold tracking-tight"
-            style={{ color: "oklch(0.228 0.034 248)" }}
+            style={{
+              color: "oklch(0.228 0.034 248)",
+              fontFamily: '"DM Sans", system-ui, sans-serif',
+            }}
           >
             Hello, Nurse Sarah!
             <br />
-            <span style={{ color: "oklch(0.228 0.034 248)" }}>
-              I&apos;m Florence.
-            </span>
+            <span>I&apos;m Florence.</span>
           </h1>
-          {/* Tagline stays teal — unchanged */}
           <p
             className="text-base font-medium tracking-wide"
-            style={{ color: "oklch(0.598 0.118 182)" }}
+            style={{
+              color: "oklch(0.598 0.118 182)",
+              fontFamily: '"DM Sans", system-ui, sans-serif',
+            }}
           >
             Your Entire Career, in Harmony.
           </p>
         </div>
-
-        {/* Prompt chips */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 w-full welcome-fade-in-delay-2">
           {PROMPT_CHIPS.map((chip, i) => (
             <button
               type="button"
               key={chip.id}
-              onClick={() => onChipClick(chip.label)}
-              className="teal-chip rounded-full px-3.5 py-2.5 text-sm font-medium text-left transition-all"
+              onClick={() => onChipClick(chip.text)}
+              className="teal-chip rounded-full px-3.5 py-2.5 text-sm text-left transition-all flex items-center gap-2"
               data-ocid={`chat.prompt_chip.${i + 1}`}
             >
-              {chip.label}
+              {chip.id === "scrubs" ? (
+                <img
+                  src="/assets/generated/scrubs-icon-transparent.dim_80x80.png"
+                  alt=""
+                  className="h-4 w-4 object-contain flex-shrink-0"
+                />
+              ) : (
+                <span>{chip.emoji}</span>
+              )}
+              <span>{chip.label}</span>
             </button>
           ))}
         </div>
@@ -115,14 +114,8 @@ function WelcomeState({ onChipClick }: WelcomeStateProps) {
   );
 }
 
-/* ─── Message bubble ──────────────────────────────────────── */
-interface MessageBubbleProps {
-  message: ChatMessage;
-}
-
-function MessageBubble({ message }: MessageBubbleProps) {
+function MessageBubble({ message }: { message: ChatMessage }) {
   const isUser = message.role === "user";
-
   return (
     <div
       className={cn(
@@ -130,7 +123,6 @@ function MessageBubble({ message }: MessageBubbleProps) {
         isUser ? "flex-row-reverse" : "flex-row",
       )}
     >
-      {/* Florence avatar */}
       {!isUser && (
         <div
           className="h-7 w-7 rounded-full flex items-center justify-center flex-shrink-0 mb-0.5"
@@ -139,7 +131,6 @@ function MessageBubble({ message }: MessageBubbleProps) {
           <span className="text-sm leading-none">🏮</span>
         </div>
       )}
-
       <div
         className={cn(
           "max-w-[78%] text-[14px]",
@@ -148,8 +139,6 @@ function MessageBubble({ message }: MessageBubbleProps) {
       >
         {message.content}
       </div>
-
-      {/* User avatar */}
       {isUser && (
         <div
           className="h-7 w-7 rounded-full flex items-center justify-center flex-shrink-0 mb-0.5"
@@ -164,7 +153,6 @@ function MessageBubble({ message }: MessageBubbleProps) {
   );
 }
 
-/* ─── Main chat panel ─────────────────────────────────────── */
 export function ChatPanel({
   activeConversation,
   messages,
@@ -191,9 +179,7 @@ export function ChatPanel({
     if (!text) return;
     setInputValue("");
     onSendMessage(text);
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "auto";
-    }
+    if (textareaRef.current) textareaRef.current.style.height = "auto";
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -217,7 +203,6 @@ export function ChatPanel({
       className="flex flex-col flex-1 relative overflow-hidden"
       style={{ transition: "all 0.3s ease" }}
     >
-      {/* Mobile back button when tool is open */}
       {isMobile && isRightPanelOpen && (
         <div
           className="flex items-center gap-2 px-4 py-2 flex-shrink-0"
@@ -238,7 +223,6 @@ export function ChatPanel({
         </div>
       )}
 
-      {/* Messages / welcome area */}
       <div className="flex-1 overflow-hidden relative">
         {!hasMessages ? (
           <div className="h-full flex flex-col">
@@ -260,7 +244,6 @@ export function ChatPanel({
         )}
       </div>
 
-      {/* Input bar */}
       <div
         className="flex-shrink-0 px-4 py-4"
         style={{
@@ -282,6 +265,10 @@ export function ChatPanel({
             onKeyDown={handleKeyDown}
             placeholder="Tell Florence what you need…"
             className="flex-1 resize-none border-0 bg-transparent text-[14px] text-foreground placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:ring-offset-0 min-h-[26px] max-h-40 py-0 px-0 leading-relaxed"
+            style={{
+              fontFamily: '"DM Sans", system-ui, sans-serif',
+              fontWeight: 400,
+            }}
             rows={1}
             data-ocid="chat.input"
           />

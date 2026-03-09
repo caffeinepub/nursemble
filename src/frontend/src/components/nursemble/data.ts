@@ -81,10 +81,11 @@ export const SAMPLE_TOOLS: ToolItem[] = [
     url: "https://nurseforge.com",
     category: "career",
   },
+  // ScrubLife uses the real scrubs image — iconEmoji kept as fallback
   {
     id: "scrublife",
     name: "ScrubLife",
-    iconEmoji: "👗",
+    iconEmoji: "🩺",
     description: "Nursing apparel & gear",
     url: "https://scrublife.com",
     category: "lifestyle",
@@ -221,12 +222,42 @@ export const SAMPLE_CONVERSATIONS: ConversationItem[] = [
 ];
 
 export const PROMPT_CHIPS = [
-  { id: "scrubs", label: "I need new scrubs 👗" },
-  { id: "burnout", label: "I'm feeling burned out 💚" },
-  { id: "business", label: "I have a business idea 💡" },
-  { id: "job", label: "Find me a nursing job 💼" },
-  { id: "connect", label: "I want to connect with nurses 🤝" },
-  { id: "clinical", label: "I need clinical resources 🏥" },
+  {
+    id: "scrubs",
+    label: "I need new scrubs",
+    emoji: "",
+    text: "I need new scrubs",
+  },
+  {
+    id: "burnout",
+    label: "I'm feeling burned out",
+    emoji: "💚",
+    text: "I'm feeling burned out",
+  },
+  {
+    id: "business",
+    label: "I have a business idea",
+    emoji: "💡",
+    text: "I have a business idea",
+  },
+  {
+    id: "job",
+    label: "Find me a nursing job",
+    emoji: "💼",
+    text: "Find me a nursing job",
+  },
+  {
+    id: "connect",
+    label: "I want to connect with nurses",
+    emoji: "🤝",
+    text: "I want to connect with nurses",
+  },
+  {
+    id: "clinical",
+    label: "I need clinical resources",
+    emoji: "🏥",
+    text: "I need clinical resources",
+  },
 ];
 
 export const SUPNURSE_TOOL = SAMPLE_TOOLS.find((t) => t.id === "supnurse")!;

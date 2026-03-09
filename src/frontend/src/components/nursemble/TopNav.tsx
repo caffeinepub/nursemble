@@ -5,13 +5,14 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ExternalLink, Menu } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { useState } from "react";
 import { SAMPLE_TOOLS } from "./data";
 import type { ToolItem } from "./types";
 
 interface TopNavProps {
-  onHamburgerClick: () => void;
+  sidebarOpen: boolean;
+  onSidebarToggle: () => void;
   onToolSelect: (tool: ToolItem) => void;
 }
 
@@ -22,9 +23,7 @@ function GridIcon() {
       height="18"
       viewBox="0 0 20 20"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      role="img"
-      aria-label="Apps grid"
+      aria-hidden="true"
     >
       <circle cx="4" cy="4" r="1.6" fill="currentColor" />
       <circle cx="10" cy="4" r="1.6" fill="currentColor" />
@@ -39,7 +38,43 @@ function GridIcon() {
   );
 }
 
-export function TopNav({ onHamburgerClick, onToolSelect }: TopNavProps) {
+/** Panel-left icon — looks like Claude's sidebar toggle */
+function PanelLeftIcon() {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 20 20"
+      fill="none"
+      aria-hidden="true"
+    >
+      <rect
+        x="2"
+        y="3"
+        width="16"
+        height="14"
+        rx="2"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        fill="none"
+      />
+      <line
+        x1="7.5"
+        y1="3"
+        x2="7.5"
+        y2="17"
+        stroke="currentColor"
+        strokeWidth="1.5"
+      />
+    </svg>
+  );
+}
+
+export function TopNav({
+  sidebarOpen,
+  onSidebarToggle,
+  onToolSelect,
+}: TopNavProps) {
   const [gridOpen, setGridOpen] = useState(false);
 
   const handleToolClick = (tool: ToolItem) => {
@@ -56,39 +91,49 @@ export function TopNav({ onHamburgerClick, onToolSelect }: TopNavProps) {
 
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 h-14"
+      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-3 h-14"
       style={{
         background: "oklch(0.920 0.012 78)",
         borderBottom: "1px solid oklch(0.228 0.034 248 / 12%)",
-        backdropFilter: "blur(0px)",
       }}
     >
-      {/* Left */}
-      <div className="flex items-center gap-2.5">
-        {/* Hamburger — mobile only */}
+      {/* Left — sidebar toggle + logo */}
+      <div className="flex items-center gap-1">
+        {/* Panel toggle — always visible on all screen sizes */}
         <Button
           variant="ghost"
           size="icon"
-          className="md:hidden text-muted-foreground hover:text-foreground h-8 w-8"
-          onClick={onHamburgerClick}
-          data-ocid="mobile.hamburger_button"
-          aria-label="Open sidebar"
+          className="h-8 w-8 rounded-lg flex-shrink-0 transition-colors"
+          style={{
+            color: sidebarOpen
+              ? "oklch(0.420 0.095 182)"
+              : "oklch(0.500 0.008 248)",
+            background: sidebarOpen
+              ? "oklch(0.598 0.118 182 / 10%)"
+              : "transparent",
+          }}
+          onClick={onSidebarToggle}
+          data-ocid="nav.sidebar_toggle"
+          aria-label={sidebarOpen ? "Close sidebar" : "Open sidebar"}
+          aria-expanded={sidebarOpen}
         >
-          <Menu className="h-[18px] w-[18px]" />
+          <PanelLeftIcon />
         </Button>
 
         {/* Logo + Wordmark */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2 ml-0.5">
           <img
             src="/assets/generated/florence-lamp-transparent.dim_120x120.png"
             alt="Nursemble lamp"
-            className="h-[30px] w-[30px] object-contain lamp-glow"
+            className="h-[28px] w-[28px] object-contain lamp-glow"
           />
           <span
-            className="text-foreground font-semibold text-[15px] tracking-tight hidden sm:block"
+            className="font-semibold text-[15px] hidden sm:block"
             style={{
-              fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif',
+              fontFamily: '"DM Sans", system-ui, sans-serif',
+              fontWeight: 600,
               letterSpacing: "-0.01em",
+              color: "oklch(0.228 0.034 248)",
             }}
           >
             Nursemble
@@ -97,14 +142,14 @@ export function TopNav({ onHamburgerClick, onToolSelect }: TopNavProps) {
       </div>
 
       {/* Right */}
-      <div className="flex items-center gap-1.5">
-        {/* 9-dot grid */}
+      <div className="flex items-center gap-1">
         <DropdownMenu open={gridOpen} onOpenChange={setGridOpen}>
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
               size="icon"
-              className="text-muted-foreground hover:text-foreground h-8 w-8 rounded-lg"
+              className="h-8 w-8 rounded-lg"
+              style={{ color: "oklch(0.500 0.008 248)" }}
               data-ocid="nav.grid_button"
               aria-label="Open tools grid"
             >
@@ -119,6 +164,7 @@ export function TopNav({ onHamburgerClick, onToolSelect }: TopNavProps) {
               border: "1px solid oklch(0.228 0.034 248 / 14%)",
               boxShadow:
                 "0 8px 32px oklch(0.228 0.034 248 / 12%), 0 2px 8px oklch(0.228 0.034 248 / 8%)",
+              fontFamily: '"DM Sans", system-ui, sans-serif',
             }}
             data-ocid="nav.tools_dropdown_menu"
           >
@@ -150,12 +196,20 @@ export function TopNav({ onHamburgerClick, onToolSelect }: TopNavProps) {
                     el.style.borderColor = "transparent";
                   }}
                 >
-                  <span className="text-base leading-none">
-                    {tool.iconEmoji}
+                  <span className="leading-none flex items-center justify-center h-5 w-5">
+                    {tool.id === "scrublife" ? (
+                      <img
+                        src="/assets/generated/scrubs-icon-transparent.dim_80x80.png"
+                        alt="Scrubs"
+                        className="h-5 w-5 object-contain"
+                      />
+                    ) : (
+                      <span className="text-base">{tool.iconEmoji}</span>
+                    )}
                   </span>
                   <span
                     className="text-[12px] font-semibold leading-tight mt-0.5"
-                    style={{ color: "oklch(0.228 0.034 248)" }}
+                    style={{ color: "oklch(0.228 0.034 248)", fontWeight: 700 }}
                   >
                     {tool.name}
                   </span>
@@ -177,7 +231,7 @@ export function TopNav({ onHamburgerClick, onToolSelect }: TopNavProps) {
                 href="mailto:hello@nursemble.com?subject=Tool Suggestion"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 text-xs transition-colors p-1.5 rounded-md"
+                className="flex items-center gap-2 text-xs p-1.5 rounded-md transition-colors"
                 style={{ color: "oklch(0.522 0.006 260)" }}
                 onMouseEnter={(e) => {
                   (e.currentTarget as HTMLAnchorElement).style.color =
@@ -188,17 +242,13 @@ export function TopNav({ onHamburgerClick, onToolSelect }: TopNavProps) {
                     "oklch(0.522 0.006 260)";
                 }}
               >
-                <ExternalLink
-                  className="h-3 w-3 flex-shrink-0"
-                  style={{ color: "oklch(0.522 0.006 260)" }}
-                />
+                <ExternalLink className="h-3 w-3 flex-shrink-0" />
                 Suggest a new tool for the ecosystem
               </a>
             </div>
           </DropdownMenuContent>
         </DropdownMenu>
 
-        {/* Profile avatar */}
         <Button
           variant="ghost"
           size="icon"
@@ -209,7 +259,10 @@ export function TopNav({ onHamburgerClick, onToolSelect }: TopNavProps) {
           <Avatar className="h-[30px] w-[30px]">
             <AvatarFallback
               className="text-[10px] font-bold text-white"
-              style={{ background: "oklch(0.598 0.118 182)" }}
+              style={{
+                background: "oklch(0.598 0.118 182)",
+                fontFamily: '"DM Sans", system-ui, sans-serif',
+              }}
             >
               SN
             </AvatarFallback>
