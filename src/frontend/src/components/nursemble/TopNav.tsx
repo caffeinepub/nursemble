@@ -58,9 +58,8 @@ export function TopNav({ onHamburgerClick, onToolSelect }: TopNavProps) {
     <header
       className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 h-14"
       style={{
-        /* P1: surface layer — slightly lighter than base for clear separation */
-        background: "oklch(0.138 0.010 250)",
-        borderBottom: "1px solid oklch(0.98 0.008 240 / 12%)",
+        background: "oklch(0.920 0.012 78)",
+        borderBottom: "1px solid oklch(0.228 0.034 248 / 12%)",
         backdropFilter: "blur(0px)",
       }}
     >
@@ -116,11 +115,10 @@ export function TopNav({ onHamburgerClick, onToolSelect }: TopNavProps) {
             align="end"
             className="p-3 w-[392px]"
             style={{
-              /* P1: overlay layer for maximum clarity */
-              background: "oklch(0.175 0.013 246)",
-              border: "1px solid oklch(0.98 0.008 240 / 14%)",
+              background: "oklch(0.975 0.005 85)",
+              border: "1px solid oklch(0.228 0.034 248 / 14%)",
               boxShadow:
-                "0 8px 32px oklch(0.08 0.008 250 / 60%), 0 2px 8px oklch(0.08 0.008 250 / 40%)",
+                "0 8px 32px oklch(0.228 0.034 248 / 12%), 0 2px 8px oklch(0.228 0.034 248 / 8%)",
             }}
             data-ocid="nav.tools_dropdown_menu"
           >
@@ -155,10 +153,16 @@ export function TopNav({ onHamburgerClick, onToolSelect }: TopNavProps) {
                   <span className="text-base leading-none">
                     {tool.iconEmoji}
                   </span>
-                  <span className="text-[12px] font-semibold text-foreground leading-tight mt-0.5">
+                  <span
+                    className="text-[12px] font-semibold leading-tight mt-0.5"
+                    style={{ color: "oklch(0.228 0.034 248)" }}
+                  >
                     {tool.name}
                   </span>
-                  <span className="text-[10px] text-muted-foreground leading-tight line-clamp-2">
+                  <span
+                    className="text-[10px] leading-tight line-clamp-2"
+                    style={{ color: "oklch(0.522 0.006 260)" }}
+                  >
                     {tool.description}
                   </span>
                 </button>
@@ -167,16 +171,27 @@ export function TopNav({ onHamburgerClick, onToolSelect }: TopNavProps) {
 
             <div
               className="mt-2.5 pt-2.5"
-              style={{ borderTop: "1px solid oklch(0.98 0.008 240 / 10%)" }}
+              style={{ borderTop: "1px solid oklch(0.228 0.034 248 / 10%)" }}
             >
               <a
                 href="mailto:hello@nursemble.com?subject=Tool Suggestion"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors p-1.5 rounded-md"
-                style={{ transition: "color 0.12s ease" }}
+                className="flex items-center gap-2 text-xs transition-colors p-1.5 rounded-md"
+                style={{ color: "oklch(0.522 0.006 260)" }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.color =
+                    "oklch(0.228 0.034 248)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.color =
+                    "oklch(0.522 0.006 260)";
+                }}
               >
-                <ExternalLink className="h-3 w-3 flex-shrink-0" />
+                <ExternalLink
+                  className="h-3 w-3 flex-shrink-0"
+                  style={{ color: "oklch(0.522 0.006 260)" }}
+                />
                 Suggest a new tool for the ecosystem
               </a>
             </div>

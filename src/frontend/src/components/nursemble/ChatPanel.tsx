@@ -33,8 +33,8 @@ function TypingIndicator() {
       <div
         className="flex items-center gap-1.5 px-4 py-3 rounded-[18px] rounded-bl-[4px]"
         style={{
-          background: "oklch(0.158 0.011 248)",
-          border: "1px solid oklch(0.98 0.008 240 / 12%)",
+          background: "oklch(0.980 0.004 90)",
+          border: "1px solid oklch(0.228 0.034 248 / 12%)",
         }}
       >
         <span
@@ -61,12 +61,11 @@ interface WelcomeStateProps {
 
 function WelcomeState({ onChipClick }: WelcomeStateProps) {
   return (
-    /* P1 FIX: atmosphere gradient behind the welcome center */
     <div className="flex flex-col items-center justify-center flex-1 px-6 pb-20 relative">
       <div className="welcome-atmosphere" />
 
       <div className="flex flex-col items-center gap-6 max-w-md w-full text-center relative z-10">
-        {/* P0 FIX: lamp with halo ring for warmth and depth */}
+        {/* Lamp with halo ring */}
         <div className="relative flex items-center justify-center welcome-fade-in">
           <div className="lamp-halo" />
           <img
@@ -76,27 +75,28 @@ function WelcomeState({ onChipClick }: WelcomeStateProps) {
           />
         </div>
 
-        {/* P2 FIX: larger, warmer heading with generous spacing */}
+        {/* Heading — Dark Navy */}
         <div className="welcome-fade-in-delay-1 space-y-2">
           <h1
             className="text-3xl font-bold tracking-tight"
-            style={{ color: "oklch(0.96 0.006 240)" }}
+            style={{ color: "oklch(0.228 0.034 248)" }}
           >
             Hello, Nurse Sarah!
             <br />
-            <span style={{ color: "oklch(0.94 0.006 240)" }}>
-              I'm Florence.
+            <span style={{ color: "oklch(0.228 0.034 248)" }}>
+              I&apos;m Florence.
             </span>
           </h1>
+          {/* Tagline stays teal — unchanged */}
           <p
             className="text-base font-medium tracking-wide"
-            style={{ color: "oklch(0.62 0.080 182)" }}
+            style={{ color: "oklch(0.598 0.118 182)" }}
           >
             Your Entire Career, in Harmony.
           </p>
         </div>
 
-        {/* P2 FIX: larger chips, warmer style */}
+        {/* Prompt chips */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 w-full welcome-fade-in-delay-2">
           {PROMPT_CHIPS.map((chip, i) => (
             <button
@@ -140,7 +140,6 @@ function MessageBubble({ message }: MessageBubbleProps) {
         </div>
       )}
 
-      {/* P2 FIX: use new bubble classes with proper padding + line-height */}
       <div
         className={cn(
           "max-w-[78%] text-[14px]",
@@ -223,8 +222,8 @@ export function ChatPanel({
         <div
           className="flex items-center gap-2 px-4 py-2 flex-shrink-0"
           style={{
-            background: "oklch(0.108 0.009 252)",
-            borderBottom: "1px solid oklch(0.98 0.008 240 / 12%)",
+            background: "oklch(0.934 0.010 80)",
+            borderBottom: "1px solid oklch(0.228 0.034 248 / 12%)",
           }}
         >
           <Button
@@ -261,19 +260,19 @@ export function ChatPanel({
         )}
       </div>
 
-      {/* P2 FIX: input bar with focus ring via chat-input-wrapper class */}
+      {/* Input bar */}
       <div
         className="flex-shrink-0 px-4 py-4"
         style={{
-          background: "oklch(0.108 0.009 252)",
-          borderTop: "1px solid oklch(0.98 0.008 240 / 10%)",
+          background: "oklch(0.934 0.010 80)",
+          borderTop: "1px solid oklch(0.228 0.034 248 / 10%)",
         }}
       >
         <div
           className="max-w-3xl mx-auto flex items-end gap-3 rounded-2xl px-4 py-3 chat-input-wrapper"
           style={{
-            background: "oklch(0.158 0.011 248)",
-            border: "1px solid oklch(0.98 0.008 240 / 12%)",
+            background: "oklch(0.980 0.004 90)",
+            border: "1px solid oklch(0.228 0.034 248 / 12%)",
           }}
         >
           <Textarea
@@ -294,8 +293,8 @@ export function ChatPanel({
             style={{
               background: inputValue.trim()
                 ? "oklch(0.598 0.118 182)"
-                : "oklch(0.198 0.012 248)",
-              color: "white",
+                : "oklch(0.870 0.012 80)",
+              color: inputValue.trim() ? "white" : "oklch(0.600 0.008 260)",
               border: "none",
               boxShadow: inputValue.trim()
                 ? "0 2px 8px oklch(0.598 0.118 182 / 35%)"

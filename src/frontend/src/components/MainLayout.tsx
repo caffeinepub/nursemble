@@ -206,7 +206,7 @@ export function MainLayout() {
   return (
     <div
       className="flex flex-col h-screen overflow-hidden"
-      style={{ background: "oklch(0.108 0.009 252)" }}
+      style={{ background: "oklch(0.934 0.010 80)" }}
     >
       {/* Top Nav */}
       <TopNav
@@ -287,9 +287,9 @@ export function MainLayout() {
       <footer
         className="flex-shrink-0 text-center py-2 px-5 text-[11px] hidden md:flex items-center justify-between"
         style={{
-          background: "oklch(0.138 0.010 250)",
-          borderTop: "1px solid oklch(0.98 0.008 240 / 12%)",
-          color: "oklch(0.44 0.010 240)",
+          background: "oklch(0.920 0.012 78)",
+          borderTop: "1px solid oklch(0.228 0.034 248 / 12%)",
+          color: "oklch(0.522 0.006 260)",
         }}
       >
         <span>

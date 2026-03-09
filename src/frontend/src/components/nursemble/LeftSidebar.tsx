@@ -37,12 +37,9 @@ const GROUP_ORDER: ConversationItem["group"][] = [
   "last30days",
 ];
 
-/*
-  P1: Sidebar uses the surface layer (0.138) which is slightly lighter
-  than base (0.108) — creating clear panel separation without being harsh.
-*/
-const SIDEBAR_BG = "oklch(0.138 0.010 250)";
-const SIDEBAR_BORDER = "1px solid oklch(0.98 0.008 240 / 12%)";
+/* Warm cream sidebar — Luffu palette */
+const SIDEBAR_BG = "oklch(0.920 0.012 78)";
+const SIDEBAR_BORDER = "1px solid oklch(0.228 0.034 248 / 12%)";
 
 export function LeftSidebar({
   isOpen,
@@ -77,7 +74,7 @@ export function LeftSidebar({
 
   const sidebarContent = (
     <div className="flex flex-col h-full overflow-hidden">
-      {/* New Chat button */}
+      {/* New Chat button — teal, unchanged */}
       <div className="p-3 flex-shrink-0">
         <Button
           onClick={onNewChat}
@@ -106,7 +103,7 @@ export function LeftSidebar({
               <div key={group} className="mb-5">
                 <p
                   className="text-[10px] font-bold uppercase tracking-[0.07em] px-2 mb-1.5"
-                  style={{ color: "oklch(0.42 0.010 240)" }}
+                  style={{ color: "oklch(0.522 0.006 260)" }}
                 >
                   {GROUP_LABELS[group]}
                 </p>
@@ -145,8 +142,8 @@ export function LeftSidebar({
                         className="text-[12px] flex-1 truncate leading-snug"
                         style={{
                           color: isActive
-                            ? "oklch(0.74 0.092 182)"
-                            : "oklch(0.68 0.010 240)",
+                            ? "oklch(0.420 0.072 182)"
+                            : "oklch(0.400 0.010 248)",
                           fontWeight: isActive ? 500 : 400,
                         }}
                       >
@@ -158,7 +155,7 @@ export function LeftSidebar({
                           type="button"
                           onClick={(e) => handleDelete(e, conv.id)}
                           className="flex-shrink-0 p-0.5 rounded transition-opacity"
-                          style={{ color: "oklch(0.48 0.010 240)" }}
+                          style={{ color: "oklch(0.500 0.008 248)" }}
                           aria-label="Delete conversation"
                           data-ocid={`sidebar.item.${ocidIndex <= 10 ? ocidIndex : index + 1}.delete_button`}
                         >
@@ -189,13 +186,13 @@ export function LeftSidebar({
           <div className="flex-1 min-w-0">
             <p
               className="text-[12px] font-semibold truncate"
-              style={{ color: "oklch(0.84 0.008 240)" }}
+              style={{ color: "oklch(0.228 0.034 248)" }}
             >
               Sarah Nurse
             </p>
             <p
               className="text-[10px]"
-              style={{ color: "oklch(0.52 0.012 240)" }}
+              style={{ color: "oklch(0.522 0.006 260)" }}
             >
               💚 245 credits
             </p>
@@ -205,7 +202,7 @@ export function LeftSidebar({
             variant="ghost"
             size="icon"
             className="h-7 w-7 flex-shrink-0 rounded-md"
-            style={{ color: "oklch(0.48 0.010 240)" }}
+            style={{ color: "oklch(0.500 0.008 248)" }}
             data-ocid="sidebar.settings_button"
             aria-label="Settings"
           >
@@ -216,7 +213,7 @@ export function LeftSidebar({
         <button
           type="button"
           className="w-full text-left text-[11px] px-2 py-1 rounded transition-colors"
-          style={{ color: "oklch(0.48 0.010 240)" }}
+          style={{ color: "oklch(0.500 0.008 248)" }}
           data-ocid="sidebar.profile_button"
         >
           View Profile
@@ -231,7 +228,7 @@ export function LeftSidebar({
       <>
         {isOpen && (
           <div
-            className="fixed inset-0 z-40 bg-black/50"
+            className="fixed inset-0 z-40 bg-black/20"
             onClick={onMobileClose}
             onKeyDown={(e) => e.key === "Escape" && onMobileClose?.()}
             aria-hidden="true"
@@ -253,7 +250,7 @@ export function LeftSidebar({
           >
             <span
               className="text-sm font-semibold"
-              style={{ color: "oklch(0.84 0.008 240)" }}
+              style={{ color: "oklch(0.228 0.034 248)" }}
             >
               History
             </span>
@@ -261,7 +258,7 @@ export function LeftSidebar({
               variant="ghost"
               size="icon"
               className="h-7 w-7"
-              style={{ color: "oklch(0.52 0.012 240)" }}
+              style={{ color: "oklch(0.522 0.006 260)" }}
               onClick={onMobileClose}
               aria-label="Close sidebar"
             >
@@ -305,11 +302,11 @@ export function LeftSidebar({
         onClick={onToggle}
         className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-full z-10 flex items-center justify-center h-8 w-4 rounded-r-md transition-colors"
         style={{
-          background: "oklch(0.178 0.011 248)",
-          borderTop: "1px solid oklch(0.98 0.008 240 / 12%)",
-          borderRight: "1px solid oklch(0.98 0.008 240 / 12%)",
-          borderBottom: "1px solid oklch(0.98 0.008 240 / 12%)",
-          color: "oklch(0.42 0.010 240)",
+          background: "oklch(0.905 0.014 80)",
+          borderTop: "1px solid oklch(0.228 0.034 248 / 12%)",
+          borderRight: "1px solid oklch(0.228 0.034 248 / 12%)",
+          borderBottom: "1px solid oklch(0.228 0.034 248 / 12%)",
+          color: "oklch(0.500 0.008 248)",
         }}
         data-ocid="sidebar.toggle"
         aria-label={isOpen ? "Collapse sidebar" : "Expand sidebar"}

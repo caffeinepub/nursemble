@@ -16,8 +16,8 @@ export function MobileTabBar({ activeTab, onTabChange }: MobileTabBarProps) {
     <nav
       className="fixed bottom-0 left-0 right-0 z-40 flex items-center md:hidden"
       style={{
-        background: "oklch(0.13 0.01 248)",
-        borderTop: "1px solid oklch(0.98 0.008 240 / 8%)",
+        background: "oklch(0.920 0.012 78)",
+        borderTop: "1px solid oklch(0.228 0.034 248 / 8%)",
         height: "60px",
         paddingBottom: "env(safe-area-inset-bottom)",
       }}
@@ -28,7 +28,7 @@ export function MobileTabBar({ activeTab, onTabChange }: MobileTabBarProps) {
           <button
             type="button"
             key={tab.id}
-            className="flex-1 flex flex-col items-center justify-center gap-1 h-full transition-colors"
+            className="flex-1 flex flex-col items-center justify-center gap-1 h-full transition-colors relative"
             onClick={() => onTabChange(tab.id)}
             data-ocid={`mobile.tab.${tab.id}`}
             aria-label={tab.label}
@@ -38,8 +38,8 @@ export function MobileTabBar({ activeTab, onTabChange }: MobileTabBarProps) {
               className="text-[10px] font-medium leading-none"
               style={{
                 color: isActive
-                  ? "oklch(0.72 0.10 182)"
-                  : "oklch(0.548 0.012 240)",
+                  ? "oklch(0.420 0.072 182)"
+                  : "oklch(0.522 0.006 260)",
               }}
             >
               {tab.label}

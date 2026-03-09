@@ -15,71 +15,76 @@
   :root {
     --radius: 0.5rem;
 
-    /* ─── Nursemble 4-layer depth system ───────────────────────────────
-       layer-base:    0.108  deepest background
-       layer-surface: 0.138  panel surfaces (sidebar, header)
-       layer-raised:  0.158  cards, bubbles, dropdowns
-       layer-overlay: 0.175  popovers, elevated cards
+    /* ─── Nursemble warm light palette — Luffu-inspired ────────────────
+       Main background:  Warm Cream    #F0EDE6 → oklch(0.934 0.010 80)
+       Cards/inputs:     Soft White    #FAFAF8 → oklch(0.980 0.004 90)
+       Headlines:        Dark Navy     #1C2B3A → oklch(0.228 0.034 248)
+       Body text:        Warm Gray     #6B6B6B → oklch(0.522 0.006 260)
+       Hero/accent:      Dusty Rose    #C4A5A0 → oklch(0.718 0.042 22)
+       Teal (lamp only): Teal          #0d9488 → oklch(0.598 0.118 182)
     ──────────────────────────────────────────────────────────────────── */
 
-    --background:      0.108 0.009 252;
-    --foreground:      0.94  0.008 240;
+    --background:      0.934 0.010 80;
+    --foreground:      0.228 0.034 248;
 
-    --card:            0.158 0.011 248;
-    --card-foreground: 0.94  0.008 240;
+    --card:            0.980 0.004 90;
+    --card-foreground: 0.228 0.034 248;
 
-    --popover:         0.175 0.013 246;
-    --popover-foreground: 0.94 0.008 240;
+    --popover:         0.975 0.005 85;
+    --popover-foreground: 0.228 0.034 248;
 
     /* Primary = Teal #0d9488 → oklch(0.598 0.118 182) */
     --primary:          0.598 0.118 182;
     --primary-foreground: 0.98 0.005 180;
 
-    --secondary:        0.198 0.012 248;
-    --secondary-foreground: 0.82 0.010 240;
+    /* Secondary: warm light mauve tint */
+    --secondary:        0.940 0.018 22;
+    --secondary-foreground: 0.228 0.034 248;
 
-    --muted:            0.178 0.010 248;
-    --muted-foreground: 0.52  0.012 240;
+    /* Muted: warm gray tones */
+    --muted:            0.950 0.008 80;
+    --muted-foreground: 0.522 0.006 260;
 
-    --accent:           0.218 0.014 246;
-    --accent-foreground: 0.92 0.008 240;
+    /* Accent: Dusty Rose */
+    --accent:           0.718 0.042 22;
+    --accent-foreground: 0.98 0.005 0;
 
     --destructive:      0.577 0.245 27.325;
     --destructive-foreground: 0.985 0 0;
 
-    /* Borders: slightly more visible for premium depth */
-    --border: 0.98 0.008 240 / 12%;
-    --input:  0.98 0.008 240 / 10%;
+    /* Borders: warm, soft */
+    --border: 0.228 0.034 248 / 12%;
+    --input:  0.228 0.034 248 / 10%;
     --ring:   0.598 0.118 182;
 
-    /* ─── Teal tokens ──────────────────────────────────────── */
+    /* ─── Teal tokens (lamp, New Chat, tagline only) ────────────── */
     --teal:          0.598 0.118 182;
     --teal-dim:      0.52  0.095 182;
     --teal-muted:    0.42  0.072 182;
     --teal-subtle:   0.598 0.118 182 / 12%;
     --teal-glow:     0.598 0.118 182 / 18%;
 
-    /* ─── Sidebar ────────────────────────────────────────────── */
-    --sidebar:            0.138 0.010 250;
-    --sidebar-foreground: 0.82  0.010 240;
+    /* ─── Sidebar: warm cream, slightly deeper ───────────────────── */
+    --sidebar:            0.920 0.012 78;
+    --sidebar-foreground: 0.228 0.034 248;
     --sidebar-primary:    0.598 0.118 182;
     --sidebar-primary-foreground: 0.98 0 0;
-    --sidebar-accent:     0.168 0.012 248;
-    --sidebar-accent-foreground: 0.85 0.008 240;
-    --sidebar-border:     0.98 0.008 240 / 10%;
+    --sidebar-accent:     0.905 0.014 80;
+    --sidebar-accent-foreground: 0.228 0.034 248;
+    --sidebar-border:     0.228 0.034 248 / 10%;
     --sidebar-ring:       0.598 0.118 182;
 
     /* ─── Charts ─────────────────────────────────────────────── */
     --chart-1: 0.598 0.118 182;
-    --chart-2: 0.696 0.170 162.48;
-    --chart-3: 0.769 0.188  70.08;
+    --chart-2: 0.718 0.042 22;
+    --chart-3: 0.769 0.188 70.08;
     --chart-4: 0.627 0.265 303.90;
-    --chart-5: 0.645 0.246  16.44;
+    --chart-5: 0.645 0.246 16.44;
   }
 
-  /* ─── Force dark mode ──────────────────────────────────────────── */
+  /* ─── Light mode — no dark mode at all ────────────────────────── */
   html {
-    color-scheme: dark;
+    color-scheme: light;
   }
 
   * {
@@ -99,11 +104,8 @@
 ═══════════════════════════════════════════════════════════════ */
 
 /*
-  P0 FIX — lamp glow redesign
-  Three-stage slow breath: ambient → warm soft peak → back.
-  Peak is 0.75 opacity (not 1.0) to stay warm, never harsh.
+  Lamp glow — teal rgba values unchanged, just softened for light bg.
   4.5s cycle feels like a living flame, not a neon sign.
-  Inner glow stays tight (12px); outer halo is very diffuse (32px).
 */
 @keyframes lampGlow {
   0%, 100% {
@@ -138,12 +140,12 @@
 }
 
 /*
-  P0 halo — radial glow behind the lamp on the welcome screen.
-  Applied to the wrapper div, not the image.
+  Halo ring behind the welcome lamp.
+  Lighter opacity since we're on a light cream background.
 */
 @keyframes haloBreath {
-  0%, 100% { opacity: 0.35; transform: scale(1.00); }
-  50%       { opacity: 0.55; transform: scale(1.06); }
+  0%, 100% { opacity: 0.28; transform: scale(1.00); }
+  50%       { opacity: 0.45; transform: scale(1.06); }
 }
 
 @keyframes typingDot {
@@ -209,8 +211,8 @@
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgba(13, 148, 136, 0.22) 0%,
-    rgba(13, 148, 136, 0.08) 45%,
+    rgba(13, 148, 136, 0.18) 0%,
+    rgba(13, 148, 136, 0.07) 45%,
     transparent 72%
   );
   animation: haloBreath 4.5s ease-in-out infinite;
@@ -250,7 +252,7 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   SCROLLBAR
+   SCROLLBAR — warm cream thumb
 ═══════════════════════════════════════════════════════════════ */
 
 ::-webkit-scrollbar {
@@ -263,7 +265,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: oklch(0.26 0.012 248);
+  background: oklch(0.800 0.012 78);
   border-radius: 2px;
 }
 
@@ -272,21 +274,21 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   P2 — MESSAGE BUBBLES: warmer padding, better leading
+   MESSAGE BUBBLES
 ═══════════════════════════════════════════════════════════════ */
 
 .bubble-florence {
-  background: oklch(0.158 0.011 248);
-  border: 1px solid oklch(0.98 0.008 240 / 12%);
-  /* subtle inner shadow for depth */
-  box-shadow: inset 0 1px 0 oklch(0.98 0.008 240 / 5%);
+  background: oklch(0.980 0.004 90);
+  border: 1px solid oklch(0.228 0.034 248 / 12%);
+  box-shadow: inset 0 1px 0 oklch(0.228 0.034 248 / 4%), 0 1px 3px oklch(0.228 0.034 248 / 6%);
   line-height: 1.72;
   padding: 12px 18px;
   border-radius: 18px;
   border-bottom-left-radius: 4px;
-  color: oklch(0.88 0.008 240);
+  color: oklch(0.228 0.034 248);
 }
 
+/* bubble-user stays teal — unchanged */
 .bubble-user {
   background: oklch(0.598 0.118 182);
   box-shadow: 0 2px 8px oklch(0.598 0.118 182 / 30%);
@@ -304,33 +306,33 @@
 .sidebar-item-active {
   border-left: 2px solid oklch(0.598 0.118 182);
   background: oklch(0.598 0.118 182 / 11%);
-  color: oklch(0.74 0.092 182);
+  color: oklch(0.420 0.072 182);
 }
 
 .sidebar-item-hover:hover {
-  background: oklch(0.168 0.011 248);
+  background: oklch(0.905 0.014 80);
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   PROMPT CHIPS — P2 larger + warmer
+   PROMPT CHIPS — warm light style
 ═══════════════════════════════════════════════════════════════ */
 
 .teal-chip {
-  background: oklch(0.158 0.011 248);
-  border: 1px solid oklch(0.98 0.008 240 / 14%);
-  color: oklch(0.74 0.010 240);
+  background: oklch(0.980 0.004 90);
+  border: 1px solid oklch(0.228 0.034 248 / 14%);
+  color: oklch(0.400 0.010 248);
   transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
 }
 
 .teal-chip:hover {
-  border-color: oklch(0.598 0.118 182 / 70%);
-  color: oklch(0.82 0.085 182);
-  background: oklch(0.598 0.118 182 / 9%);
-  box-shadow: 0 0 0 1px oklch(0.598 0.118 182 / 18%);
+  border-color: oklch(0.598 0.118 182 / 60%);
+  color: oklch(0.420 0.095 182);
+  background: oklch(0.598 0.118 182 / 8%);
+  box-shadow: 0 0 0 1px oklch(0.598 0.118 182 / 15%);
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   CHAT INPUT — focus ring
+   CHAT INPUT — focus ring (teal, unchanged)
 ═══════════════════════════════════════════════════════════════ */
 
 .chat-input-wrapper {
@@ -343,7 +345,7 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   P1 — DEPTH: Atmosphere gradient behind welcome
+   WELCOME ATMOSPHERE — lighter teal glow on cream background
 ═══════════════════════════════════════════════════════════════ */
 
 .welcome-atmosphere {
@@ -352,7 +354,7 @@
   pointer-events: none;
   background: radial-gradient(
     ellipse 60% 50% at 50% 40%,
-    oklch(0.598 0.118 182 / 6%) 0%,
+    oklch(0.598 0.118 182 / 5%) 0%,
     transparent 70%
   );
 }
